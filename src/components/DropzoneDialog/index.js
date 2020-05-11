@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { DropzoneDialog } from "material-ui-dropzone";
 import Button from "@material-ui/core/Button";
-import csvToJson from "convert-csv-to-json";
 
 export default class DropzoneDialogComponent extends Component {
   constructor(props) {

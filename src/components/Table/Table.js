@@ -5,12 +5,8 @@ import styles from "assets/jss/material-dashboard-react/components/tableStyle.js
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
-import Card from "components/Card/Card.js";
-import CardBody from "components/Card/CardBody.js";
-import Grid from "@material-ui/core/Grid";
 import Modal from "@material-ui/core/Modal";
 import Backdrop from "@material-ui/core/Backdrop";
-import Fade from "@material-ui/core/Fade";
 const useStyles = makeStyles(styles);
 
 export default function MoviesTable({ movies, deleteMovie }) {
@@ -65,7 +61,7 @@ export default function MoviesTable({ movies, deleteMovie }) {
             <ListItem>
               <ListItemText
                 primary="Release Year"
-                secondary={movieDetails['Release Year']}
+                secondary={movieDetails["Release Year"]}
               />
             </ListItem>
             <ListItem>

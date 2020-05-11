@@ -5,7 +5,7 @@ export const convertTXTtoJSON = data => {
       const split = keyValue.split(": ");
       const key = split[0];
       const value = split[1];
-      obj[key] = key === "Stars" ? value.split(", ") : value;
+      obj[key] = key === "Stars" ? value.split(" , ") : value;
     });
     return obj;
   });
