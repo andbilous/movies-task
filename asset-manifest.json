@@ -1,0 +1,18 @@
+{
+  "files": {
+    "main.css": "/movies-task/static/css/main.1a5f11bd.chunk.css",
+    "main.js": "/movies-task/static/js/main.bd737167.chunk.js",
+    "main.js.map": "/movies-task/static/js/main.bd737167.chunk.js.map",
+    "runtime~main.js": "/movies-task/static/js/runtime~main.13278c35.js",
+    "runtime~main.js.map": "/movies-task/static/js/runtime~main.13278c35.js.map",
+    "static/css/2.d0176e96.chunk.css": "/movies-task/static/css/2.d0176e96.chunk.css",
+    "static/js/2.d14bffb5.chunk.js": "/movies-task/static/js/2.d14bffb5.chunk.js",
+    "static/js/2.d14bffb5.chunk.js.map": "/movies-task/static/js/2.d14bffb5.chunk.js.map",
+    "index.html": "/movies-task/index.html",
+    "precache-manifest.c49cc57df9ac8e8c78e2c32333aa36ed.js": "/movies-task/precache-manifest.c49cc57df9ac8e8c78e2c32333aa36ed.js",
+    "service-worker.js": "/movies-task/service-worker.js",
+    "static/css/2.d0176e96.chunk.css.map": "/movies-task/static/css/2.d0176e96.chunk.css.map",
+    "static/css/main.1a5f11bd.chunk.css.map": "/movies-task/static/css/main.1a5f11bd.chunk.css.map",
+    "static/media/sidebar-2.jpg": "/movies-task/static/media/sidebar-2.310509c9.jpg"
+  }
+}
