@@ -8,10 +8,11 @@
 
 # production
 /build
-/.history
+.history
 
 # npmjs
 /dist
+.github/workflows
 
 # misc
 .DS_Store
