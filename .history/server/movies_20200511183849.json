@@ -1,0 +1,29 @@
+[{
+    "id": 1,
+    "Title": "Blazing Saddles",
+    "ReleaseYear": "1974",
+    "Format": "VHS",
+    "Stars": [Mel Brooks, Clevon Little, Harvey Korman, Gene Wilder, "Slim Pickens", "Madeline Kahn"]
+  },
+  {
+    "id": 2,
+    "Title": "Casablanca",
+    "ReleaseYear": "1942",
+    "Format": "DVD",
+    "Stars": ["Audrey Hepburn", "Cary Grant", "Walter Matthau", "James Coburn", "George Kennedy"]
+  },
+  {
+    "id": 3,
+    "Title": "Cool Hand Luke",
+    "ReleaseYear": "1967",
+    "Format": "VHS",
+    "Stars": "Paul Newman, George Kennedy, Strother Martin"
+  },
+  {
+    "id": 4,
+    "Title": "Butch Cassidy and the Sundance Kid",
+    "ReleaseYear": "1969",
+    "Format": "VHS",
+    "Stars": "Paul Newman, Robert Redford, Katherine Ross"
+  }
+]

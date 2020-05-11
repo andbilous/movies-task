@@ -1,0 +1,16 @@
+{
+  "movies": [
+    {
+    "title": "Blazing Saddles",
+    "Release Year": "json-server",
+    "Format": "VHS",
+    "Stars": "Mel Brooks, Clevon Little, Harvey Korman, Gene Wilder, Slim Pickens, Madeline Kahn"
+  },
+  {
+    "title": "Casablanca",
+    "Release Year": "json-server",
+    "Format": "VHS",
+    "Stars": "Mel Brooks, Clevon Little, Harvey Korman, Gene Wilder, Slim Pickens, Madeline Kahn"
+  }
+]
+}

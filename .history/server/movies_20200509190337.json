@@ -1,0 +1,5 @@
+{
+  "movies": [
+    { "title": "Blazing Saddles", "release Year": "json-server", "author": "typicode" }
+  ]
+}
