@@ -33,7 +33,7 @@ const moviesReducer = (state = initialValues, { type, payload }) => {
           ...state,
           movies: [...state.movies, payload]
         };
-      }
+      } else return state;
 
     default:
       return state;
