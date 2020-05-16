@@ -28,10 +28,10 @@ const moviesReducer = (state = initialValues, { type, payload }) => {
         movies: state.movies.filter(movie => movie.id !== payload)
       };
     case types.ADD_MOVIE:
-      if (payload.id && payload.Title && payload.Format) {
+      if (payload.Title && payload.Format) {
         return {
           ...state,
-          movies: [...state.movies, payload]
+          movies: state.movies.concat(payload)
         };
       } else return state;
 

@@ -13,6 +13,7 @@ import {
   deleteMovie,
   addMovie
 } from "../../redux/movies/movies.actions";
+import Alert from "@material-ui/lab/Alert";
 
 function TableList({ fetchMovies, movies, deleteMovie, addMovie }) {
   useEffect(() => {
@@ -40,6 +41,9 @@ function TableList({ fetchMovies, movies, deleteMovie, addMovie }) {
         <Card>
           <CardBody>
             <AddModal addMovie={handleAddMovie} />
+            <Alert onClose={() => {}}>
+              This is a success alert — check it out!
+            </Alert>
             <Table
               movies={movies}
               deleteMovie={handleDeleteMovie}

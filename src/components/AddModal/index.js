@@ -27,13 +27,17 @@ const useStyles = makeStyles(theme => ({
 export default function TransitionsModal({ addMovie }) {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
+  const [failedFields, setFailedFields] = useState([]);
   const [movie, setMovie] = useState({
-    id: Math.floor(Math.random() * 1000),
     Format: "VHS",
-    "Release Year": "2020",
+    "Release Year": "",
     Stars: [],
-    Title: "Movie"
+    Title: ""
   });
+
+  const getRand = () => {
+    return Math.floor(Math.random() * 1000);
+  };
 
   const handleOpen = () => {
     setOpen(true);
@@ -42,17 +46,68 @@ export default function TransitionsModal({ addMovie }) {
   const handleClose = () => {
     setOpen(false);
   };
-  const handleChange = prop => event => {
+
+  const validateFields = (prop, value) => {
+    console.log(prop);
+    if (prop === "Release Year") {
+      if (parseInt(value) < 1850 || parseInt(value) > 2020) {
+        setFailedFields([...failedFields, "Release Year"]);
+      } else {
+        setFailedFields(failedFields.filter(item => item !== "Release Year"));
+      }
+    }
+    if (prop === "Title") {
+      if (!value) {
+        setFailedFields([...failedFields, "Title"]);
+      } else {
+        setFailedFields(failedFields.filter(item => item !== "Title"));
+      }
+    }
+    if (prop === "Format") {
+      if (!value) {
+        setFailedFields([...failedFields, "Format"]);
+      } else {
+        setFailedFields(failedFields.filter(item => item !== "Format"));
+      }
+    }
     if (prop === "Stars") {
-      setMovie({ ...movie, [prop]: event.target.value.split(",") });
-    } else {
-      setMovie({ ...movie, [prop]: event.target.value });
+      if (!movie.Stars.length || movie.Stars.includes(value.trim())) {
+        setFailedFields([...failedFields, "Stars"]);
+      } else {
+        setFailedFields(failedFields.filter(item => item !== "Stars"));
+      }
     }
   };
 
+  const handleChange = prop => event => {
+    console.log(event.target.value.trim());
+    if (prop === "Stars") {
+      setMovie({ ...movie, [prop]: event.target.value.trim().split(",") });
+    } else {
+      setMovie({ ...movie, [prop]: event.target.value });
+    }
+    validateFields(prop, event.target.value);
+  };
+
   const handleAddMovie = () => {
-    addMovie(movie);
-    handleClose();
+    if (!movie.Stars) {
+      setFailedFields([...failedFields, "Stars"]);
+    }
+    if (!movie.Title) {
+      setFailedFields([...failedFields, "Title"]);
+    }
+    if (!movie["Release Year"]) {
+      setFailedFields([...failedFields, "Release Year"]);
+    }
+    if (
+      !failedFields.length &&
+      movie.Stars.length &&
+      movie.Title &&
+      movie["Release Year"]
+    ) {
+      addMovie(Object.assign(movie, { id: getRand() }));
+      handleClose();
+    }
   };
   return (
     <div>
@@ -79,7 +134,7 @@ export default function TransitionsModal({ addMovie }) {
                 <InputLabel id="format">Format</InputLabel>
                 <Select
                   labelId="format"
-                  id="demo-simple-select"
+                  id="format"
                   value={movie.Format}
                   onChange={handleChange}
                 >
@@ -90,12 +145,12 @@ export default function TransitionsModal({ addMovie }) {
               </Grid>
               <Grid item xs>
                 <TextField
-                  error={movie.title}
+                  error={failedFields.includes("Title")}
                   value={movie.title}
                   onChange={handleChange("Title")}
                   id="Title"
                   label="Title"
-                  defaultValue="Title"
+                  placeholder="Title"
                 />
               </Grid>
             </Grid>
@@ -103,23 +158,23 @@ export default function TransitionsModal({ addMovie }) {
               <Grid item xs>
                 <TextField
                   type="number"
-                  error={movie.releaseYear}
+                  error={failedFields.includes("Release Year")}
                   value={movie.releaseYear}
                   onChange={handleChange("Release Year")}
                   id="Release Year"
                   label="Release Year"
-                  defaultValue="Release Year"
-                  helperText=""
+                  placeholder="2020"
+                  helperText="Choose year from 1850 to 2020"
                 />
               </Grid>
               <Grid item xs>
                 <TextField
-                  error={movie.stars}
+                  error={failedFields.includes("Stars")}
                   value={movie.stars}
                   onChange={handleChange("Stars")}
                   label="Stars"
                   id="Stars"
-                  defaultValue="Stars"
+                  placeholder="Brad Pitt"
                 />
               </Grid>
             </Grid>
