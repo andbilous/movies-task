@@ -2,11 +2,13 @@ import types from "./movies.types";
 
 const initialValues = {
   movies: [],
-  isLoading: false
+  isLoading: false,
+  successDelete: false
 };
 
 const moviesReducer = (state = initialValues, { type, payload }) => {
   switch (type) {
+    case types.UPLOAD_MOVIES_START:
     case types.FETCH_MOVIES_START:
       return {
         ...state,
@@ -15,12 +17,19 @@ const moviesReducer = (state = initialValues, { type, payload }) => {
     case types.FETCH_MOVIES_SUCCESS:
       return {
         ...state,
-        movies: payload
+        movies: payload,
+        isLoading: false
       };
     case types.FETCH_MOVIES_FAILURE:
       return {
         ...state,
-        isLoading: true
+        isLoading: false
+      };
+    case types.UPLOAD_MOVIES_SUCCESS:
+      return {
+        ...state,
+        movies: state.movies.concat(payload),
+        isLoading: false
       };
     case types.DELETE_MOVIE:
       return {

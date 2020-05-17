@@ -1,5 +1,7 @@
 import types from "./movies.types";
 import moviesAPI from "../../API/movies.api";
+import { convertTXTtoJSON } from "../../utils/convertTXTtoJSON";
+import { generateId } from "../../utils/generateId";
 
 export const fetchMovies = () => async dispatch => {
   dispatch(fetchMoviesStart());
@@ -14,6 +16,33 @@ export const fetchMovies = () => async dispatch => {
     dispatch(fetchMoviesFailure("error"));
   }
 };
+
+export const uploadMovies = data => async dispatch => {
+  dispatch(uploadMoviesStart());
+  let datafromField = convertTXTtoJSON(data).map(item => {
+    return {
+      ...item,
+      id: generateId()
+    };
+  });
+  if (datafromField) {
+    dispatch(uploadMoviesSuccess(datafromField));
+  } else dispatch(uploadMoviesFailure());
+};
+
+const uploadMoviesStart = () => ({
+  type: types.UPLOAD_MOVIES_START
+});
+
+const uploadMoviesSuccess = data => ({
+  type: types.UPLOAD_MOVIES_SUCCESS,
+  payload: data
+});
+
+const uploadMoviesFailure = error => ({
+  type: types.UPLOAD_MOVIES_FAILURE,
+  payload: error
+});
 
 const fetchMoviesStart = () => ({
   type: types.FETCH_MOVIES_START

@@ -9,6 +9,7 @@ import Grid from "@material-ui/core/Grid";
 import { InputLabel } from "@material-ui/core";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
+import { transformTitle } from "../../utils/transformTitle";
 
 const useStyles = makeStyles(theme => ({
   modal: {
@@ -80,13 +81,15 @@ export default function TransitionsModal({ addMovie }) {
   };
 
   const handleChange = prop => event => {
-    console.log(event.target.value.trim());
+    validateFields(prop, event.target.value);
     if (prop === "Stars") {
       setMovie({ ...movie, [prop]: event.target.value.trim().split(",") });
+    }
+    if (prop === "Title") {
+      setMovie({ ...movie, [prop]: transformTitle(event.target.value) });
     } else {
       setMovie({ ...movie, [prop]: event.target.value });
     }
-    validateFields(prop, event.target.value);
   };
 
   const handleAddMovie = () => {
@@ -105,7 +108,8 @@ export default function TransitionsModal({ addMovie }) {
       movie.Title &&
       movie["Release Year"]
     ) {
-      addMovie(Object.assign(movie, { id: getRand() }));
+      addMovie({ ...movie, id: getRand() });
+      setMovie({ Format: "VHS", "Release Year": "", Stars: [], Title: "" });
       handleClose();
     }
   };
@@ -131,12 +135,14 @@ export default function TransitionsModal({ addMovie }) {
             <h2 id="transition-modal-title">Add Movie</h2>
             <Grid container spacing={2}>
               <Grid item xs>
-                <InputLabel id="format">Format</InputLabel>
+                <InputLabel id="Format">Format</InputLabel>
                 <Select
-                  labelId="format"
-                  id="format"
+                  labelId="Format"
+                  id="Format"
                   value={movie.Format}
-                  onChange={handleChange}
+                  onChange={event => {
+                    setMovie({ ...movie, Format: event.target.value });
+                  }}
                 >
                   <MenuItem value={"VHS"}>VHS</MenuItem>
                   <MenuItem value={"Blu-Ray"}>Blu-Ray</MenuItem>

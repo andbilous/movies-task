@@ -26,9 +26,7 @@ export default class DropzoneDialogComponent extends Component {
       () => {
         var reader = new FileReader();
         reader.onload = () => {
-          const res = reader.result;
-          console.log(res)
-          this.props.getDataFromFile(res);
+          this.props.getDataFromFile(reader.result);
         };
         reader.readAsText(this.state.files[0]);
       }

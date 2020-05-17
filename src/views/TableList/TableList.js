@@ -7,28 +7,34 @@ import Card from "components/Card/Card.js";
 import CardBody from "components/Card/CardBody.js";
 import DropzoneDialogComponent from "components/DropzoneDialog";
 import AddModal from "../../components/AddModal";
-import { convertTXTtoJSON } from "../../utils/convertTXTtoJSON";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import { generateId } from "../../utils/generateId";
 import {
   fetchMovies,
   deleteMovie,
-  addMovie
+  addMovie,
+  uploadMovies
 } from "../../redux/movies/movies.actions";
 import Alert from "@material-ui/lab/Alert";
 
-function TableList({ fetchMovies, movies, deleteMovie, addMovie }) {
+function TableList({
+  fetchMovies,
+  movies,
+  deleteMovie,
+  addMovie,
+  uploadMovies,
+  isLoading
+}) {
   useEffect(() => {
     fetchMovies();
   }, []);
 
   const getDataFromFile = data => {
-    let datafromField = convertTXTtoJSON(data);
-    datafromField.forEach(item => {
-      addMovie(Object.assign(item, { id: Math.floor(Math.random() * 1000) }));
-    });
+    uploadMovies(data);
   };
 
   const handleAddMovie = movie => {
-    addMovie(movie);
+    addMovie({ ...movie, id: generateId() });
   };
 
   const handleDeleteMovie = id => {
@@ -44,6 +50,8 @@ function TableList({ fetchMovies, movies, deleteMovie, addMovie }) {
             <Alert onClose={() => {}}>
               This is a success alert — check it out!
             </Alert>
+            {console.log("IsLoading", isLoading)}
+            {isLoading && <CircularProgress size="3rem" />}
             <Table
               movies={movies}
               deleteMovie={handleDeleteMovie}
@@ -58,12 +66,14 @@ function TableList({ fetchMovies, movies, deleteMovie, addMovie }) {
 
 const TableListContainer = connect(
   state => ({
-    movies: state.moviesReducer.movies
+    movies: state.moviesReducer.movies,
+    isLoading: state.moviesReducer.isLoading
   }),
   dispatch => ({
     fetchMovies: () => dispatch(fetchMovies()),
     deleteMovie: id => dispatch(deleteMovie(id)),
-    addMovie: movie => dispatch(addMovie(movie))
+    addMovie: movie => dispatch(addMovie(movie)),
+    uploadMovies: data => dispatch(uploadMovies(data))
   })
 )(TableList);
 
