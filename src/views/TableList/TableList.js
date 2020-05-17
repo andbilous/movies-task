@@ -8,7 +8,7 @@ import CardBody from "components/Card/CardBody.js";
 import DropzoneDialogComponent from "components/DropzoneDialog";
 import AddModal from "../../components/AddModal";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import { generateId } from "../../utils/generateId";
+import { generateId } from "../../utils";
 import {
   fetchMovies,
   deleteMovie,

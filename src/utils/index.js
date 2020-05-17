@@ -10,3 +10,9 @@ export const convertTXTtoJSON = data => {
     return obj;
   });
 };
+
+export const generateId = () => Math.floor(Math.random() * 100000);
+
+export const transformTitle = title => {
+  return title.toLowerCase().replace(/^./, title[0].toUpperCase());
+};

@@ -1,7 +1,6 @@
 import types from "./movies.types";
 import moviesAPI from "../../API/movies.api";
-import { convertTXTtoJSON } from "../../utils/convertTXTtoJSON";
-import { generateId } from "../../utils/generateId";
+import { generateId, transformTitle, convertTXTtoJSON } from "../../utils";
 
 export const fetchMovies = () => async dispatch => {
   dispatch(fetchMoviesStart());
@@ -22,6 +21,7 @@ export const uploadMovies = data => async dispatch => {
   let datafromField = convertTXTtoJSON(data).map(item => {
     return {
       ...item,
+      Title: transformTitle(item.title),
       id: generateId()
     };
   });

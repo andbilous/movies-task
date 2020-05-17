@@ -9,7 +9,7 @@ import Grid from "@material-ui/core/Grid";
 import { InputLabel } from "@material-ui/core";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
-import { transformTitle } from "../../utils/transformTitle";
+import { generateId, transformTitle } from "../../utils";
 
 const useStyles = makeStyles(theme => ({
   modal: {
@@ -35,10 +35,6 @@ export default function TransitionsModal({ addMovie }) {
     Stars: [],
     Title: ""
   });
-
-  const getRand = () => {
-    return Math.floor(Math.random() * 1000);
-  };
 
   const handleOpen = () => {
     setOpen(true);
@@ -108,7 +104,7 @@ export default function TransitionsModal({ addMovie }) {
       movie.Title &&
       movie["Release Year"]
     ) {
-      addMovie({ ...movie, id: getRand() });
+      addMovie({ ...movie, id: generateId() });
       setMovie({ Format: "VHS", "Release Year": "", Stars: [], Title: "" });
       handleClose();
     }
