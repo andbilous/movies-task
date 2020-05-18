@@ -53,10 +53,10 @@ export default function MoviesTable({ movies, deleteMovie }) {
           <h1 id="transition-modal-title">Movie Details</h1>
           <List className={modalClasses.list}>
             <ListItem>
-              <ListItemText primary="ID" secondary={movieDetails.id} /> :
+              <ListItemText primary="ID" secondary={movieDetails.id} />
             </ListItem>
             <ListItem>
-              <ListItemText primary="Title" secondary={movieDetails.Title} /> :
+              <ListItemText primary="Title" secondary={movieDetails.Title} />
             </ListItem>
             <ListItem>
               <ListItemText
