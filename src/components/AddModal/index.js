@@ -9,7 +9,7 @@ import Grid from "@material-ui/core/Grid";
 import { InputLabel } from "@material-ui/core";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
-import { generateId, transformTitle } from "../../utils";
+import { transformToFirstLetterUppercase } from "../../utils";
 
 const useStyles = makeStyles(theme => ({
   modal: {
@@ -45,7 +45,6 @@ export default function TransitionsModal({ addMovie }) {
   };
 
   const validateFields = (prop, value) => {
-    console.log(prop);
     if (prop === "Release Year") {
       if (parseInt(value) < 1850 || parseInt(value) > 2020) {
         setFailedFields([...failedFields, "Release Year"]);
@@ -68,7 +67,7 @@ export default function TransitionsModal({ addMovie }) {
       }
     }
     if (prop === "Stars") {
-      if (!movie.Stars.length || movie.Stars.includes(value.trim())) {
+      if (!movie.Stars.length || movie.Stars.includes(value)) {
         setFailedFields([...failedFields, "Stars"]);
       } else {
         setFailedFields(failedFields.filter(item => item !== "Stars"));
@@ -79,10 +78,25 @@ export default function TransitionsModal({ addMovie }) {
   const handleChange = prop => event => {
     validateFields(prop, event.target.value);
     if (prop === "Stars") {
-      setMovie({ ...movie, [prop]: event.target.value.trim().split(",") });
+      const stars = event.target.value.split(",").map(item => {
+        if (item) {
+          return transformToFirstLetterUppercase(item);
+        }
+        return item;
+      });
+      setMovie({
+        ...movie,
+        [prop]: stars
+      });
     }
+
     if (prop === "Title") {
-      setMovie({ ...movie, [prop]: transformTitle(event.target.value) });
+      if (event.target.value) {
+        setMovie({
+          ...movie,
+          [prop]: transformToFirstLetterUppercase(event.target.value)
+        });
+      }
     } else {
       setMovie({ ...movie, [prop]: event.target.value });
     }
@@ -104,7 +118,7 @@ export default function TransitionsModal({ addMovie }) {
       movie.Title &&
       movie["Release Year"]
     ) {
-      addMovie({ ...movie, id: generateId() });
+      addMovie(movie);
       setMovie({ Format: "VHS", "Release Year": "", Stars: [], Title: "" });
       handleClose();
     }

@@ -13,17 +13,23 @@ import {
   fetchMovies,
   deleteMovie,
   addMovie,
-  uploadMovies
+  uploadMovies,
+  dismissSuccessAdd,
+  dismissSuccessDelete
 } from "../../redux/movies/movies.actions";
 import Alert from "@material-ui/lab/Alert";
 
 function TableList({
   fetchMovies,
   movies,
+  successAdd,
+  successDelete,
   deleteMovie,
   addMovie,
   uploadMovies,
-  isLoading
+  isLoading,
+  dismissSuccessAdd,
+  dismissSuccessDelete
 }) {
   useEffect(() => {
     fetchMovies();
@@ -47,10 +53,24 @@ function TableList({
         <Card>
           <CardBody>
             <AddModal addMovie={handleAddMovie} />
-            <Alert onClose={() => {}}>
-              This is a success alert — check it out!
-            </Alert>
-            {console.log("IsLoading", isLoading)}
+            {successAdd && (
+              <Alert
+                onClose={() => {
+                  dismissSuccessAdd();
+                }}
+              >
+                Movie was added successfully !
+              </Alert>
+            )}
+            {successDelete && (
+              <Alert
+                onClose={() => {
+                  dismissSuccessDelete();
+                }}
+              >
+                Movie was deleted successfully !
+              </Alert>
+            )}
             {isLoading && <CircularProgress size="3rem" />}
             <Table
               movies={movies}
@@ -67,13 +87,17 @@ function TableList({
 const TableListContainer = connect(
   state => ({
     movies: state.moviesReducer.movies,
-    isLoading: state.moviesReducer.isLoading
+    isLoading: state.moviesReducer.isLoading,
+    successDelete: state.moviesReducer.successDelete,
+    successAdd: state.moviesReducer.successAdd
   }),
   dispatch => ({
     fetchMovies: () => dispatch(fetchMovies()),
     deleteMovie: id => dispatch(deleteMovie(id)),
     addMovie: movie => dispatch(addMovie(movie)),
-    uploadMovies: data => dispatch(uploadMovies(data))
+    uploadMovies: data => dispatch(uploadMovies(data)),
+    dismissSuccessAdd: () => dispatch(dismissSuccessAdd()),
+    dismissSuccessDelete: () => dispatch(dismissSuccessDelete())
   })
 )(TableList);
 

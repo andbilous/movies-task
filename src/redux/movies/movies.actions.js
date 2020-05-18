@@ -1,6 +1,10 @@
 import types from "./movies.types";
 import moviesAPI from "../../API/movies.api";
-import { generateId, transformTitle, convertTXTtoJSON } from "../../utils";
+import {
+  generateId,
+  transformToFirstLetterUppercase,
+  convertTXTtoJSON
+} from "../../utils";
 
 export const fetchMovies = () => async dispatch => {
   dispatch(fetchMoviesStart());
@@ -21,7 +25,7 @@ export const uploadMovies = data => async dispatch => {
   let datafromField = convertTXTtoJSON(data).map(item => {
     return {
       ...item,
-      Title: transformTitle(item.title),
+      Title: transformToFirstLetterUppercase(item.title),
       id: generateId()
     };
   });
@@ -65,5 +69,13 @@ export const deleteMovie = id => ({
 
 export const addMovie = movie => ({
   type: types.ADD_MOVIE,
-  payload: movie
+  payload: { ...movie, id: generateId() }
+});
+
+export const dismissSuccessAdd = () => ({
+  type: types.DISMISS_SUCCESS_ADD
+});
+
+export const dismissSuccessDelete = () => ({
+  type: types.DISMISS_SUCCESS_DELETE
 });

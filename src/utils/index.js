@@ -13,6 +13,6 @@ export const convertTXTtoJSON = data => {
 
 export const generateId = () => Math.floor(Math.random() * 100000);
 
-export const transformTitle = title => {
+export const transformToFirstLetterUppercase = title => {
   return title.toLowerCase().replace(/^./, title[0].toUpperCase());
 };
