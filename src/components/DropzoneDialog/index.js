@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { DropzoneDialog } from "material-ui-dropzone";
 import Button from "@material-ui/core/Button";
+import { convertTXTtoJSON } from "../../utils";
+import Alert from "@material-ui/lab/Alert";
 
 export default class DropzoneDialogComponent extends Component {
   constructor(props) {
@@ -26,7 +28,10 @@ export default class DropzoneDialogComponent extends Component {
       () => {
         var reader = new FileReader();
         reader.onload = () => {
-          this.props.getDataFromFile(reader.result);
+          let convertedFileData = convertTXTtoJSON(reader.result).filter(
+            item => item.Title
+          );
+          this.props.getDataFromFile(convertedFileData);
         };
         reader.readAsText(this.state.files[0]);
       }
@@ -45,6 +50,16 @@ export default class DropzoneDialogComponent extends Component {
         <Button color="primary" onClick={this.handleOpen.bind(this)}>
           Upload Movies
         </Button>
+        {this.props.uploadError && (
+          <Alert
+            severity="error"
+            onClose={() => {
+              this.props.dismissErrorUpload();
+            }}
+          >
+            Incorrect File Data
+          </Alert>
+        )}
         <DropzoneDialog
           open={this.state.open}
           onSave={this.handleSave.bind(this)}

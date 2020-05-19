@@ -9,34 +9,46 @@ import DropzoneDialogComponent from "components/DropzoneDialog";
 import AddModal from "../../components/AddModal";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { generateId } from "../../utils";
+import Alert from "@material-ui/lab/Alert";
 import {
   fetchMovies,
   deleteMovie,
   addMovie,
   uploadMovies,
   dismissSuccessAdd,
-  dismissSuccessDelete
+  dismissSuccessDelete,
+  fetchMoviesFailure,
+  dismissErrorUpload,
+  dismissSuccessUpload
 } from "../../redux/movies/movies.actions";
-import Alert from "@material-ui/lab/Alert";
 
 function TableList({
   fetchMovies,
   movies,
   successAdd,
   successDelete,
+  successUpload,
   deleteMovie,
   addMovie,
   uploadMovies,
   isLoading,
   dismissSuccessAdd,
-  dismissSuccessDelete
+  dismissSuccessDelete,
+  uploadError,
+  fetchMoviesFailure,
+  dismissErrorUpload,
+  dismissSuccessUpload
 }) {
   useEffect(() => {
     fetchMovies();
   }, []);
 
   const getDataFromFile = data => {
-    uploadMovies(data);
+    if (!data.length) {
+      fetchMoviesFailure("Incorrect file data");
+    } else {
+      uploadMovies(data);
+    }
   };
 
   const handleAddMovie = movie => {
@@ -49,10 +61,15 @@ function TableList({
   return (
     <GridContainer>
       <GridItem xs={12} sm={12} md={12}>
-        <DropzoneDialogComponent getDataFromFile={getDataFromFile} />
+        <DropzoneDialogComponent
+          uploadError={uploadError}
+          getDataFromFile={getDataFromFile}
+          dismissErrorUpload={dismissErrorUpload}
+        />
         <Card>
           <CardBody>
-            <AddModal addMovie={handleAddMovie} />
+            <AddModal movies={movies} addMovie={handleAddMovie} />
+            {isLoading && <CircularProgress size="3rem" />}
             {successAdd && (
               <Alert
                 onClose={() => {
@@ -71,7 +88,15 @@ function TableList({
                 Movie was deleted successfully !
               </Alert>
             )}
-            {isLoading && <CircularProgress size="3rem" />}
+            {successUpload && (
+              <Alert
+                onClose={() => {
+                  dismissSuccessUpload();
+                }}
+              >
+                Movies have been uploaded successfully !
+              </Alert>
+            )}
             <Table
               movies={movies}
               deleteMovie={handleDeleteMovie}
@@ -89,15 +114,20 @@ const TableListContainer = connect(
     movies: state.moviesReducer.movies,
     isLoading: state.moviesReducer.isLoading,
     successDelete: state.moviesReducer.successDelete,
-    successAdd: state.moviesReducer.successAdd
+    successAdd: state.moviesReducer.successAdd,
+    uploadError: state.moviesReducer.uploadError,
+    successUpload: state.moviesReducer.successUpload
   }),
   dispatch => ({
     fetchMovies: () => dispatch(fetchMovies()),
     deleteMovie: id => dispatch(deleteMovie(id)),
     addMovie: movie => dispatch(addMovie(movie)),
     uploadMovies: data => dispatch(uploadMovies(data)),
+    fetchMoviesFailure: error => dispatch(fetchMoviesFailure(error)),
     dismissSuccessAdd: () => dispatch(dismissSuccessAdd()),
-    dismissSuccessDelete: () => dispatch(dismissSuccessDelete())
+    dismissSuccessDelete: () => dispatch(dismissSuccessDelete()),
+    dismissErrorUpload: () => dispatch(dismissErrorUpload()),
+    dismissSuccessUpload: () => dispatch(dismissSuccessUpload())
   })
 )(TableList);
 

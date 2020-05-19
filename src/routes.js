@@ -1,4 +1,4 @@
-import {TableList} from "views/TableList/TableList.js";
+import { TableList } from "views/TableList/TableList.js";
 
 const dashboardRoutes = [
   {

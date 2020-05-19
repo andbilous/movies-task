@@ -4,7 +4,9 @@ const initialValues = {
   movies: [],
   isLoading: false,
   successDelete: false,
-  successAdd: false
+  successAdd: false,
+  successUpload: false,
+  uploadError: ""
 };
 
 const moviesReducer = (state = initialValues, { type, payload }) => {
@@ -24,14 +26,16 @@ const moviesReducer = (state = initialValues, { type, payload }) => {
     case types.FETCH_MOVIES_FAILURE:
       return {
         ...state,
-        isLoading: false
+        isLoading: false,
+        uploadError: payload
       };
 
     case types.UPLOAD_MOVIES_SUCCESS:
       return {
         ...state,
         movies: state.movies.concat(payload),
-        isLoading: false
+        isLoading: false,
+        successUpload: true
       };
 
     case types.DELETE_MOVIE:
@@ -60,6 +64,18 @@ const moviesReducer = (state = initialValues, { type, payload }) => {
       return {
         ...state,
         successDelete: false
+      };
+
+    case types.DISMISS_ERROR_UPLOAD:
+      return {
+        ...state,
+        uploadError: ""
+      };
+
+    case types.DISMISS_SUCCESS_UPLOAD:
+      return {
+        ...state,
+        successUpload: false
       };
     default:
       return state;

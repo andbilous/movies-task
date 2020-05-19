@@ -93,7 +93,8 @@ export default function MoviesTable({ movies, deleteMovie }) {
           filtering: true,
           search: false,
           toolbar: false,
-          actionsColumnIndex: -1
+          actionsColumnIndex: -1,
+          defaultSort: "asc"
         }}
         columns={[
           { title: "ID", field: "id", filtering: false },

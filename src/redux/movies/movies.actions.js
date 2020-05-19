@@ -1,10 +1,6 @@
 import types from "./movies.types";
 import moviesAPI from "../../API/movies.api";
-import {
-  generateId,
-  transformToFirstLetterUppercase,
-  convertTXTtoJSON
-} from "../../utils";
+import { generateId, transformToFirstLetterUppercase } from "../../utils";
 
 export const fetchMovies = () => async dispatch => {
   dispatch(fetchMoviesStart());
@@ -22,16 +18,14 @@ export const fetchMovies = () => async dispatch => {
 
 export const uploadMovies = data => async dispatch => {
   dispatch(uploadMoviesStart());
-  let datafromField = convertTXTtoJSON(data).map(item => {
+  let dataToAdd = data.map(item => {
     return {
       ...item,
-      Title: transformToFirstLetterUppercase(item.title),
+      Title: transformToFirstLetterUppercase(item.Title),
       id: generateId()
     };
   });
-  if (datafromField) {
-    dispatch(uploadMoviesSuccess(datafromField));
-  } else dispatch(uploadMoviesFailure());
+  dispatch(uploadMoviesSuccess(dataToAdd));
 };
 
 const uploadMoviesStart = () => ({
@@ -57,7 +51,7 @@ const fetchMoviesSuccess = data => ({
   payload: data
 });
 
-const fetchMoviesFailure = error => ({
+export const fetchMoviesFailure = error => ({
   type: types.FETCH_MOVIES_FAILURE,
   payload: error
 });
@@ -78,4 +72,12 @@ export const dismissSuccessAdd = () => ({
 
 export const dismissSuccessDelete = () => ({
   type: types.DISMISS_SUCCESS_DELETE
+});
+
+export const dismissErrorUpload = () => ({
+  type: types.DISMISS_ERROR_UPLOAD
+});
+
+export const dismissSuccessUpload = () => ({
+  type: types.DISMISS_SUCCESS_UPLOAD
 });

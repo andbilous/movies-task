@@ -4,6 +4,7 @@ import Modal from "@material-ui/core/Modal";
 import Backdrop from "@material-ui/core/Backdrop";
 import Fade from "@material-ui/core/Fade";
 import Button from "@material-ui/core/Button";
+import Alert from "@material-ui/lab/Alert";
 import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
 import { InputLabel } from "@material-ui/core";
@@ -25,10 +26,11 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function TransitionsModal({ addMovie }) {
+export default function TransitionsModal({ addMovie, movies }) {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [failedFields, setFailedFields] = useState([]);
+  const [isDuplicate, setIsDuplicate] = useState(false);
   const [movie, setMovie] = useState({
     Format: "VHS",
     "Release Year": "",
@@ -43,6 +45,9 @@ export default function TransitionsModal({ addMovie }) {
   const handleClose = () => {
     setOpen(false);
   };
+
+  const isArrayContainsOnlyUniqueValues = array =>
+    array.filter((x, i) => array.indexOf(x) === i).length === array.length;
 
   const validateFields = (prop, value) => {
     if (prop === "Release Year") {
@@ -67,7 +72,10 @@ export default function TransitionsModal({ addMovie }) {
       }
     }
     if (prop === "Stars") {
-      if (!movie.Stars.length || movie.Stars.includes(value)) {
+      console.log(value);
+      console.log(movie.Stars);
+
+      if (!isArrayContainsOnlyUniqueValues(value)) {
         setFailedFields([...failedFields, "Stars"]);
       } else {
         setFailedFields(failedFields.filter(item => item !== "Stars"));
@@ -76,34 +84,39 @@ export default function TransitionsModal({ addMovie }) {
   };
 
   const handleChange = prop => event => {
-    validateFields(prop, event.target.value);
+    let updatedMovie = {};
     if (prop === "Stars") {
-      const stars = event.target.value.split(",").map(item => {
-        if (item) {
-          return transformToFirstLetterUppercase(item);
-        }
-        return item;
-      });
-      setMovie({
+      const stars = event.target.value.split(",");
+      updatedMovie = {
         ...movie,
-        [prop]: stars
-      });
-    }
-
-    if (prop === "Title") {
+        ["Stars"]: stars
+      };
+    } else if (prop === "Title") {
       if (event.target.value) {
-        setMovie({
+        updatedMovie = {
           ...movie,
           [prop]: transformToFirstLetterUppercase(event.target.value)
-        });
+        };
       }
     } else {
-      setMovie({ ...movie, [prop]: event.target.value });
+      updatedMovie = { ...movie, [prop]: event.target.value };
+    }
+    if (
+      movies.filter(
+        movie =>
+          movie.Title === updatedMovie.Title &&
+          movie["Release Year"] === updatedMovie["Release Year"]
+      ).length
+    ) {
+      setIsDuplicate(true);
+    } else {
+      validateFields(prop, updatedMovie[prop]);
+      setMovie(updatedMovie);
     }
   };
 
   const handleAddMovie = () => {
-    if (!movie.Stars) {
+    if (!movie.Stars.length) {
       setFailedFields([...failedFields, "Stars"]);
     }
     if (!movie.Title) {
@@ -143,6 +156,16 @@ export default function TransitionsModal({ addMovie }) {
         <Fade in={open}>
           <div className={classes.paper}>
             <h2 id="transition-modal-title">Add Movie</h2>
+            {isDuplicate && (
+              <Alert
+                severity="error"
+                onClose={() => {
+                  setIsDuplicate(false);
+                }}
+              >
+                This movie is already exist !
+              </Alert>
+            )}
             <Grid container spacing={2}>
               <Grid item xs>
                 <InputLabel id="Format">Format</InputLabel>
@@ -162,7 +185,7 @@ export default function TransitionsModal({ addMovie }) {
               <Grid item xs>
                 <TextField
                   error={failedFields.includes("Title")}
-                  value={movie.title}
+                  value={movie.Title}
                   onChange={handleChange("Title")}
                   id="Title"
                   label="Title"
@@ -186,7 +209,7 @@ export default function TransitionsModal({ addMovie }) {
               <Grid item xs>
                 <TextField
                   error={failedFields.includes("Stars")}
-                  value={movie.stars}
+                  value={movie.Stars ? movie.Stars.join(",") : ""}
                   onChange={handleChange("Stars")}
                   label="Stars"
                   id="Stars"
