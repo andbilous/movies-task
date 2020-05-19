@@ -214,6 +214,7 @@ export default function TransitionsModal({ addMovie, movies }) {
                   label="Stars"
                   id="Stars"
                   placeholder="Brad Pitt"
+                  helperText="Use  ,  as words separator"
                 />
               </Grid>
             </Grid>
