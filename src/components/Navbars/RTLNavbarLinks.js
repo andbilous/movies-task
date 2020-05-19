@@ -1,6 +1,5 @@
 import React from "react";
 import classNames from "classnames";
-// @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import MenuItem from "@material-ui/core/MenuItem";
 import MenuList from "@material-ui/core/MenuList";
@@ -8,7 +7,6 @@ import Grow from "@material-ui/core/Grow";
 import Paper from "@material-ui/core/Paper";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import Poppers from "@material-ui/core/Popper";
-import CustomInput from "components/CustomInput/CustomInput.js";
 
 import styles from "assets/jss/material-dashboard-react/components/rtlHeaderLinksStyle.js";
 
@@ -24,19 +22,6 @@ export default function RTLNavbarLinks() {
 
   return (
     <div>
-      <div className={classes.searchWrapper}>
-        <CustomInput
-          formControlProps={{
-            className: classes.margin + " " + classes.search
-          }}
-          inputProps={{
-            placeholder: "جستجو...",
-            inputProps: {
-              "aria-label": "Search"
-            }
-          }}
-        />
-      </div>
       <div className={classes.manager}>
         <Poppers
           open={Boolean(open)}
